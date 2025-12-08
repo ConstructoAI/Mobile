@@ -17,7 +17,7 @@ self.addEventListener('install', event => {
 
 self.addEventListener('fetch', event => {
   // Pour les requêtes vers le site principal, toujours aller en ligne
-  if (event.request.url.includes('app.constructoai.ca')) {
+  if (event.request.url.includes('constructoai.ca')) {
     event.respondWith(fetch(event.request));
     return;
   }

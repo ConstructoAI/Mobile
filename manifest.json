@@ -2,7 +2,7 @@
   "name": "Constructo AI",
   "short_name": "Constructo AI",
   "description": "ERP intelligent pour la construction au Québec",
-  "start_url": "https://app.constructoai.ca/",
+  "start_url": "https://constructoai.ca/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#ffffff",
