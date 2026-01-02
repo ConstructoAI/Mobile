@@ -15,10 +15,15 @@
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { height: 100%; overflow: hidden; }
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            overscroll-behavior: none; /* Empêche le conflit de scroll */
+        }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #ffffff;
+            touch-action: none; /* Laisse l'iframe gérer le touch */
         }
         .loading-screen {
             position: fixed;
@@ -45,9 +50,18 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         iframe {
-            width: 100%; height: 100%;
-            border: none; position: fixed;
-            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            /* Optimisations scroll tactile Android */
+            -webkit-overflow-scrolling: touch;
+            overflow: auto;
+            touch-action: pan-y pan-x;
+            will-change: transform;
+            transform: translateZ(0); /* Force accélération GPU */
         }
     </style>
 </head>
@@ -59,7 +73,7 @@
         <div class="loader"></div>
     </div>
     
-    <iframe id="app" src="https://constructoai.ca/" allow="geolocation; microphone; camera"></iframe>
+    <iframe id="app" src="https://constructoai.ca/" allow="geolocation; microphone; camera" scrolling="yes"></iframe>
 
     <script>
         // Enregistrer le Service Worker
