@@ -24,7 +24,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
-import android.widget.Toast;
+import android.webkit.JavascriptInterface;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -111,11 +111,8 @@ public class MainActivity extends AppCompatActivity {
             webView.reload();
         });
 
-        // Désactiver le swipe refresh sauf quand on est tout en haut de la page
-        webView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            // Activer le pull-to-refresh UNIQUEMENT si la WebView est tout en haut
-            swipeRefresh.setEnabled(scrollY == 0);
-        });
+        // Désactiver le swipe refresh par défaut - sera activé via JavaScript
+        swipeRefresh.setEnabled(false);
 
         // Bouton retry sur l'écran d'erreur
         findViewById(R.id.btnRetry).setOnClickListener(v -> {
@@ -123,6 +120,17 @@ public class MainActivity extends AppCompatActivity {
             splashScreen.setVisibility(View.VISIBLE);
             loadWebsite();
         });
+    }
+
+    // Interface JavaScript pour communiquer le scroll depuis la page web
+    private class WebAppInterface {
+        @JavascriptInterface
+        public void setScrollPosition(int scrollY) {
+            runOnUiThread(() -> {
+                // Activer le pull-to-refresh UNIQUEMENT si on est tout en haut (scrollY <= 5)
+                swipeRefresh.setEnabled(scrollY <= 5);
+            });
+        }
     }
 
     private void checkPermissions() {
@@ -184,6 +192,9 @@ public class MainActivity extends AppCompatActivity {
         String userAgent = settings.getUserAgentString();
         settings.setUserAgentString(userAgent + " ConstructoAI-Android/1.0");
 
+        // Ajouter l'interface JavaScript pour la communication
+        webView.addJavascriptInterface(new WebAppInterface(), "AndroidApp");
+
         // WebViewClient pour la navigation
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -197,6 +208,9 @@ public class MainActivity extends AppCompatActivity {
                 super.onPageFinished(view, url);
                 swipeRefresh.setRefreshing(false);
                 hideSplashScreen();
+
+                // Injecter le script de détection du scroll pour le pull-to-refresh
+                injectScrollDetectionScript(view);
             }
 
             @Override
@@ -333,6 +347,28 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadWebsite() {
         webView.loadUrl(WEB_URL);
+    }
+
+    private void injectScrollDetectionScript(WebView view) {
+        // Script JavaScript qui surveille le scroll de la page
+        // Fonctionne avec les pages normales ET les SPA (React, Vue, Angular)
+        String script = "(function() {" +
+                "  var lastScrollY = -1;" +
+                "  function checkScroll() {" +
+                "    var scrollY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;" +
+                "    if (scrollY !== lastScrollY) {" +
+                "      lastScrollY = scrollY;" +
+                "      if (typeof AndroidApp !== 'undefined') {" +
+                "        AndroidApp.setScrollPosition(Math.round(scrollY));" +
+                "      }" +
+                "    }" +
+                "  }" +
+                "  window.addEventListener('scroll', checkScroll, true);" +
+                "  window.addEventListener('touchmove', checkScroll, true);" +
+                "  document.addEventListener('scroll', checkScroll, true);" +
+                "  checkScroll();" +
+                "})();";
+        view.evaluateJavascript(script, null);
     }
 
     private void hideSplashScreen() {
