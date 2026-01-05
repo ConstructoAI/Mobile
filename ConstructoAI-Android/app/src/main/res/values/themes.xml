@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.ConstructoAI" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Couleurs principales -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/primary</item>
+
+        <!-- Couleurs de fond -->
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:colorBackground">@color/white</item>
+
+        <!-- Status bar -->
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <!-- Navigation bar -->
+        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowLightNavigationBar">true</item>
+
+        <!-- Pas de title bar -->
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+</resources>
