@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Constructo AI</string>
+    <string name="app_subtitle">ERP intelligent pour la construction</string>
+
+    <!-- Écran d'erreur -->
+    <string name="error_title">Connexion impossible</string>
+    <string name="error_message">Vérifiez votre connexion internet et réessayez.</string>
+    <string name="retry">Réessayer</string>
+    <string name="no_connection">Pas de connexion</string>
+
+    <!-- Permissions -->
+    <string name="permission_camera">L\'application a besoin d\'accéder à votre caméra.</string>
+    <string name="permission_location">L\'application a besoin d\'accéder à votre position.</string>
+    <string name="permission_microphone">L\'application a besoin d\'accéder à votre microphone.</string>
+</resources>

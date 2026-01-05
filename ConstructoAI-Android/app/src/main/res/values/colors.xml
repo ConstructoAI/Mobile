@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Couleurs principales -->
+    <color name="primary">#4285F4</color>
+    <color name="primary_dark">#3367D6</color>
+    <color name="primary_light">#7BAAF7</color>
+
+    <!-- Couleurs de base -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray">#9E9E9E</color>
+
+    <!-- Couleurs de texte -->
+    <color name="text_primary">#1A1A1A</color>
+    <color name="text_secondary">#666666</color>
+
+    <!-- Couleurs de thème -->
+    <color name="background">#FFFFFF</color>
+    <color name="surface">#FFFFFF</color>
+
+    <!-- Status bar -->
+    <color name="status_bar">#FFFFFF</color>
+</resources>
